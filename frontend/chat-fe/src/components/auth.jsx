@@ -13,14 +13,20 @@ const Auth = () => {
     event.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/auth/signup", {
-        username: username,
-        password: password,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/auth/signup",
+        {
+          username: username,
+          password: password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       if (res.data.message === "User already exists") {
         alert("Username already exists");
       } else {
-        router.push("/");
+        router.push("/chat");
       }
     } catch (error) {
       console.log("Error in signup function : ", error.message);
@@ -31,10 +37,16 @@ const Auth = () => {
     event.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/auth/login", {
-        username: username,
-        password: password,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/auth/login",
+        {
+          username: username,
+          password: password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       router.push("/chat");
     } catch (error) {

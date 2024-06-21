@@ -14,13 +14,18 @@ const io = new Server(server, { // io is the instance of the socket.io server cl
     },
 });
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on("chat msg", (msg) => {
-        console.log("Received message: " + msg);
-        socket.broadcast.emit("chat msg", msg);
+io.on("connection", (socket) => {
+    console.log('Client connected');
+    const username = socket.handshake.query.username;
+    console.log('Username:', username);
+    socket.on('chat msg', (msg) => {
+        console.log(msg.sender);
+        console.log(msg.receiver);
+        console.log(msg.text);
+
     });
-});
+})
+
 
 app.get('/', (req, res) => {
     res.send('Hello World');

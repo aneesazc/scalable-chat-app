@@ -19,3 +19,26 @@ export const signup = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 }
+
+export const login = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const foundUser = await User.findOne({ username });
+        if (!foundUser) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+        const isPasswordValid = await bcrypt.compare(password, foundUser.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+        generateTokenAndSetCookie(foundUser._id, res);
+        return res.status(200).json({
+            id: foundUser._id,
+            username: foundUser.username
+        }
+        );
+    } catch (error) {
+        console.log("Error logging in user", error.message);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
