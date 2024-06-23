@@ -25,7 +25,7 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    const s = io("http://localhost:8080", {
+    const s = io("http://localhost:8084", {
       query: {
         username: authName,
       },
